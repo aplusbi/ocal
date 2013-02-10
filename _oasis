@@ -1,0 +1,13 @@
+OASISFormat: 0.2
+Name:        ocal
+Version:     0.1
+Synopsis:    gCal daemon
+Authors:     Niki Yoshiuchi
+License:     Apache-2.0
+Plugins:     DevFiles (0.2)
+
+Executable ocal
+  Path:       src
+  BuildTools: ocamlbuild
+  MainIs:     main.ml
+  BuildDepends: yojson, curl, batteries
