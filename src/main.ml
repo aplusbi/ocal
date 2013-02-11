@@ -2,17 +2,6 @@ open Yojson.Safe
 open Batteries
 open BatPervasives
 
-let url_encode s =
-    let encode = function
-        | '/' -> "%2F"
-        | ':' -> "%3A"
-        | '?' -> "%3F"
-        | '&' -> "%26"
-        | '@' -> "%40"
-        | c -> BatString.of_char c
-    in
-    BatString.replace_chars encode s
-
 let post_field k v =
     Curl.CURLFORM_CONTENT (k, v, Curl.DEFAULT)
 
@@ -70,7 +59,7 @@ let read_refresh_token tkn = function
 
 let get_oauth cfg = 
     let baseurl = "https://accounts.google.com/o/oauth2/auth?" in
-    let params = [("scope", url_encode "https://www.googleapis.com/auth/calendar.readonly");
+    let params = [("scope", Http.url_encode "https://www.googleapis.com/auth/calendar.readonly");
         ("response_type", "code");
         ("client_id", cfg.client_id);
         ("redirect_uri", "urn:ietf:wg:oauth:2.0:oob");
