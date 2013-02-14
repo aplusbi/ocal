@@ -44,7 +44,7 @@ let post ?header ?content url =
 
   let status = Curl.get_httpcode conn in
   Curl.cleanup conn;
-  (status, result_header, result)
+  (status, !result_header, !result)
 
 let get ?header ?params url =
   let result = ref "" in
@@ -71,4 +71,4 @@ let get ?header ?params url =
 
   let status = Curl.get_httpcode conn in
   Curl.cleanup conn;
-  (status, result_header, result)
+  (status, !result_header, !result)
