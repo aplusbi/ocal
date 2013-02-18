@@ -1,4 +1,4 @@
-open Yojson.Safe
+open Yojson.Basic
 open Batteries
 open BatPervasives
 open Config
@@ -6,6 +6,10 @@ open Config
 let create_auth_header tkn =
   let {Auth.access_token = access_token} = tkn in
   "Authorization: Bearer " ^ access_token
+
+let print_event e =
+  let { Cal.summary = summary } = e in
+  print_endline summary
 
 let () =
   try
@@ -24,15 +28,14 @@ let () =
 
     let rec loop a =
       match Cal.event_list a "aplusbi@gmail.com" with
-      | (200, _, s) ->
-        let j = from_string s in
-        j |> pretty_to_string |> print_endline;
+      | (200, l) ->
+        BatList.iter print_event l;
         BatUnix.sleep 5;
         loop a
-      | (401, _, _) -> let t = Auth.refresh_token cfg token in
+      | (401, _) -> let t = Auth.refresh_token cfg token in
         let tkn = from_string t |> Auth.read_refresh_token token in
         loop (create_auth_header tkn)
-      | (s, _, _) -> print_int s; print_newline ()
+      | (s, _) -> print_int s; print_newline ()
     in
     loop auth;
 

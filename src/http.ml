@@ -1,5 +1,5 @@
 open Batteries
-open Pervasives
+open BatPervasives
 
 let url_encode s =
   let encode = function
